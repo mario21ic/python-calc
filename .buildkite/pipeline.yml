@@ -4,10 +4,14 @@ agents:
 steps:
   - label: "build"
     command: "docker-build.sh"
+    agents:
+      stack: "buildkite-agent-us-east-2-vdh-m5large-amd64"
 
   - wait
 
   - label: "test"
     command: "docker-test.sh"
+    agents:
+      stack: "buildkite-agent-us-east-2-vdh-m5large-amd64"
 
 
