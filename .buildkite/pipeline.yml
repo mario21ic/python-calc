@@ -1,0 +1,6 @@
+steps:
+  - label: "docker build & test"
+    command: "docker-build.sh"
+    command: "docker-test.sh"
+
+
