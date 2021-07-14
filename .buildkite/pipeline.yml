@@ -1,3 +1,6 @@
+agents:
+  queue: "buildkite-agent-us-east-2-vdh-m5large-amd64"
+
 steps:
   - label: "build"
     command: "docker-build.sh"
