@@ -2,6 +2,8 @@ steps:
   - label: "build"
     command: "docker-build.sh"
 
+  - wait
+
   - label: "test"
     command: "docker-test.sh"
 
