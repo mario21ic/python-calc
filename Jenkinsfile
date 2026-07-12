@@ -27,7 +27,7 @@ pipeline {
 
     stage("Secret scan") {
       steps {
-        sh "./docker-gittyleaks.sh"
+        sh "./docker-gittyleaks.sh ./src/"
       }
     }
 
