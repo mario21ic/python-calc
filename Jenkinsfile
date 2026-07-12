@@ -37,12 +37,6 @@ pipeline {
       }
     }
 
-    stage("Docker login") {
-      steps {
-        
-      }
-    }
-
     stage("Publish image") {
       steps {
         withCredentials([usernamePassword(credentialsId: "${params.DOCKER_CREDENTIALS}", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
