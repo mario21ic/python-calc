@@ -43,9 +43,9 @@ pipeline {
       }
     }
 
-    stage("Integration tests") {
+    stage("E2E tests") {
       steps {
-        sh "./docker-integration-test.sh ${env.DOCKER_IMAGE_VERSION}"
+        sh "./docker-e2e-test.sh ${env.DOCKER_IMAGE_VERSION}"
       }
     }
 

@@ -6,7 +6,7 @@ import requests
 BASE_URL = os.environ.get('API_URL', 'http://localhost:8081')
 
 
-class TestApiIntegration(unittest.TestCase):
+class TestApiE2E(unittest.TestCase):
 
     def test_home(self):
         response = requests.get(BASE_URL + '/')
