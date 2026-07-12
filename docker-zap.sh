@@ -3,6 +3,7 @@ set -xe
 
 IMAGE_NAME=$1
 TARGET_URL=${2:-http://host.docker.internal:8081}
+OPENAPI_URL="${TARGET_URL}/openapi.json"
 
 docker rm -f pycalc-dast || true
 docker run -d --rm --name pycalc-dast -p 8081:8081 ${IMAGE_NAME}
@@ -15,8 +16,10 @@ chmod 777 zap-reports
 docker run --rm \
   -v $(pwd)/zap-reports:/zap/wrk/:rw \
   --add-host=host.docker.internal:host-gateway \
-  zaproxy/zap-stable zap-baseline.py \
-  -t ${TARGET_URL} \
+  zaproxy/zap-stable zap-api-scan.py \
+  -t ${OPENAPI_URL} \
+  -f openapi \
+  -O ${TARGET_URL} \
   -r dast-report.html \
   -I
 

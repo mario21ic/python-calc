@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PyCalc API",
+    "version": "1.0.0",
+    "description": "Simple calculator API"
+  },
+  "servers": [
+    { "url": "http://localhost:8081" }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Health check",
+        "operationId": "home",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "text/plain": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/greeting/{name}": {
+      "get": {
+        "summary": "Greeting",
+        "operationId": "greeting",
+        "parameters": [
+          { "name": "name", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "text/plain": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/add": {
+      "post": {
+        "summary": "Add two numbers",
+        "operationId": "add",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcResponse" } } }
+          }
+        }
+      }
+    },
+    "/sub": {
+      "post": {
+        "summary": "Subtract two numbers",
+        "operationId": "sub",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcResponse" } } }
+          }
+        }
+      }
+    },
+    "/mul": {
+      "post": {
+        "summary": "Multiply two numbers",
+        "operationId": "mul",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcResponse" } } }
+          }
+        }
+      }
+    },
+    "/div": {
+      "post": {
+        "summary": "Divide two numbers",
+        "operationId": "div",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CalcResponse" } } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CalcRequest": {
+        "type": "object",
+        "required": ["number1", "number2"],
+        "properties": {
+          "number1": { "type": "number" },
+          "number2": { "type": "number" }
+        }
+      },
+      "CalcResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "result": { "type": "number", "nullable": true }
+        }
+      }
+    }
+  }
+}

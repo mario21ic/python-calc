@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import re, json
+import re, json, os
 
 from bottle import route, run, template
 from bottle import request, response, hook
@@ -29,6 +29,38 @@ def home():
 @get('/greeting/<name>')
 def greeting(name):
     return "Hello %s!" % name
+
+@route('/openapi.json', method=['GET'])
+def openapi_spec():
+    response.headers['Content-Type'] = 'application/json'
+    spec_path = os.path.join(os.path.dirname(__file__), 'openapi.json')
+    with open(spec_path) as f:
+        return f.read()
+
+@route('/docs', method=['GET'])
+def swagger_ui():
+    response.headers['Content-Type'] = 'text/html'
+    return """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PyCalc API - Swagger UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+      window.onload = function() {
+        SwaggerUIBundle({
+          url: '/openapi.json',
+          dom_id: '#swagger-ui'
+        });
+      };
+    </script>
+  </body>
+</html>
+"""
 
 
 @route('/add', method=['POST', 'OPTIONS'])
