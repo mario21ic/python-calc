@@ -10,6 +10,7 @@ docker run -d --rm --name pycalc-dast -p 8081:8081 ${IMAGE_NAME}
 sleep 5
 
 mkdir -p zap-reports
+chmod 777 zap-reports
 
 docker run --rm \
   -v $(pwd)/zap-reports:/zap/wrk/:rw \
