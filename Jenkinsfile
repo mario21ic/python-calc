@@ -31,27 +31,37 @@ pipeline {
       }
     }
 
+    stage("Docker scan") {
+      steps {
+        sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION}"
+      }
+    }
+
     stage("Docker login") {
       steps {
-        withCredentials([usernamePassword(credentialsId: "${params.DOCKER_CREDENTIALS}", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-          sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-        }
+        
       }
     }
 
     stage("Publish image") {
       steps {
+        withCredentials([usernamePassword(credentialsId: "${params.DOCKER_CREDENTIALS}", passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+          sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+        }
+        
         sh "docker push ${env.DOCKER_IMAGE_VERSION}"
-      }
-    }
-
-    stage("Docker logout") {
-      steps {
-        sh "docker logout"
       }
     }
 
   }
 
+  post {
+    always {
+      script {
+        // slackSend(channel: "${params.SLACK_CHANNEL}", color: '#FFFF00', message: " - Job '${env.JOB_NAME}' - Build #${env.BUILD_NUMBER}: ${env.BUILD_URL}")
+        sh "docker logout"
+      }
+    }
+  }
 }
 
