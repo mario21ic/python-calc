@@ -25,6 +25,12 @@ pipeline {
       }
     }
 
+    stage("Unit tests") {
+      steps {
+        sh "./docker-unittest.sh"
+      }
+    }
+
     stage("Secret scan") {
       steps {
         sh "./docker-gittyleaks.sh ./src/ || true" 
