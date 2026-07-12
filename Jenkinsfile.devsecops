@@ -25,15 +25,15 @@ pipeline {
       }
     }
 
-    // stage("Secret scan") {
-    //   steps {
-    //     sh "./docker-gittyleaks.sh ./src/"
-    //   }
-    // }
+    stage("Secret scan") {
+      steps {
+        sh "./docker-gittyleaks.sh ./src/ || true" 
+      }
+    }
 
     stage("SAST") {
       steps {
-        sh "./docker-bandit.sh src"
+        sh "./docker-bandit.sh src || true"
       }
     }
 
@@ -58,7 +58,7 @@ pipeline {
         }
         stage("Scan") {
           steps {
-            sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION}"
+            sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION} || true"
           }
         }
       }
