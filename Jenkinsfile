@@ -43,6 +43,12 @@ pipeline {
       }
     }
 
+    stage("Integration tests") {
+      steps {
+        sh "./docker-integration-test.sh ${env.DOCKER_IMAGE_VERSION}"
+      }
+    }
+
     stage("Security") {
       parallel {
         stage("SBOM") {
