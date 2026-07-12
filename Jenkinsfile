@@ -27,7 +27,7 @@ pipeline {
 
     stage("Secret scan") {
       steps {
-        sh "./docker-gitleaks.sh"
+        sh "./docker-gittyleaks.sh"
       }
     }
 
@@ -37,14 +37,14 @@ pipeline {
       }
     }
 
-    stage("Security scan") {
+    stage("Security") {
       parallel {
         stage("SBOM") {
           steps {
             sh "./docker-syft.sh ${env.DOCKER_IMAGE_VERSION}"
           }
         }
-        stage("Trivy") {
+        stage("Scan") {
           steps {
             sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION}"
           }
