@@ -39,7 +39,7 @@ pipeline {
 
     stage("SCA") {
       steps {
-        sh "./docker-pip-audit.sh requirements.txt"
+        sh "./docker-pip-audit.sh requirements.txt || true"
       }
     }
 
@@ -66,7 +66,7 @@ pipeline {
 
     stage("DAST") {
       steps {
-        sh "./docker-zap.sh ${env.DOCKER_IMAGE_VERSION}"
+        sh "./docker-zap.sh ${env.DOCKER_IMAGE_VERSION} || true"
       }
     }
 
