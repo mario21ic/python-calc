@@ -36,4 +36,14 @@ Docker Compose
 $ docker-compose up
 ```
 
+OpenApi:
+```
+curl http://localhost:8081/openapi.json
+```
+
+Swagger:
+```
+curl http://localhost:8081/docs
+```
+
 Nueva linea para ci automatico
