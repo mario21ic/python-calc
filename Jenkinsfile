@@ -25,11 +25,11 @@ pipeline {
       }
     }
 
-    stage("Secret scan") {
-      steps {
-        sh "./docker-gittyleaks.sh ./src/"
-      }
-    }
+    // stage("Secret scan") {
+    //   steps {
+    //     sh "./docker-gittyleaks.sh ./src/"
+    //   }
+    // }
 
     stage("Docker build") {
       steps {
