@@ -10,6 +10,9 @@ pipeline {
     string(name: 'DOCKER_IMAGE', defaultValue: 'mario21ic/python-calc', description: 'Docker image')
     string(name: 'DOCKER_CREDENTIALS', defaultValue: 'dockerhub_credentials', description: 'Credentials on Docker Hub organization')
     string(name: 'SLACK_CHANNEL', defaultValue: 'jenkins-blazingsql', description: '')
+    string(name: 'SONAR_ORGANIZATION', defaultValue: 'project-u201421533', description: 'SonarCloud organization key')
+    string(name: 'SONAR_PROJECT_KEY', defaultValue: 'project-u201421533_python-calc', description: 'SonarCloud project key')
+    string(name: 'SONAR_CREDENTIALS', defaultValue: 'sonarcloud_token', description: 'Jenkins credential id (Secret text) with the SonarCloud token')
   }
 
   environment {
@@ -46,6 +49,20 @@ pipeline {
     stage("SCA") {
       steps {
         sh "./docker-pip-audit.sh requirements.txt || true"
+      }
+    }
+
+    stage("Sonar scan") {
+      steps {
+        script {
+          try {
+            withCredentials([string(credentialsId: "${params.SONAR_CREDENTIALS}", variable: 'SONAR_TOKEN')]) {
+              sh "./docker-sonar.sh ${params.SONAR_ORGANIZATION} ${params.SONAR_PROJECT_KEY}"
+            }
+          } catch (e) {
+            echo "Credencial '${params.SONAR_CREDENTIALS}' no encontrada. Omitiendo Sonar scan."
+          }
+        }
       }
     }
 
