@@ -25,21 +25,30 @@ pipeline {
       }
     }
 
+    stage("Secret scan") {
+      steps {
+        sh "./docker-gitleaks.sh"
+      }
+    }
+
     stage("Docker build") {
       steps {
         sh "docker build -t ${env.DOCKER_IMAGE_VERSION} ./"
       }
     }
 
-    stage("SBOM") {
-      steps {
-        sh "./docker-syft.sh ${env.DOCKER_IMAGE_VERSION}"
-      }
-    }
-
-    stage("Docker Scan") {
-      steps {
-        sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION}"
+    stage("Security scan") {
+      parallel {
+        stage("SBOM") {
+          steps {
+            sh "./docker-syft.sh ${env.DOCKER_IMAGE_VERSION}"
+          }
+        }
+        stage("Trivy") {
+          steps {
+            sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION}"
+          }
+        }
       }
     }
 
