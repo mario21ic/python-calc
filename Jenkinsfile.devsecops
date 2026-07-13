@@ -75,6 +75,12 @@ pipeline {
       }
     }
 
+    stage("Kubernetes manifest scan") {
+      steps {
+        sh "./docker-kubesec.sh k8s/deployment.yaml"
+      }
+    }
+
     stage("Docker build") {
       steps {
         sh "docker build -t ${env.DOCKER_IMAGE_VERSION} ./"
