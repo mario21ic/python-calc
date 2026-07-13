@@ -81,6 +81,12 @@ pipeline {
       }
     }
 
+    stage("Kubernetes policy as code") {
+      steps {
+        sh "./docker-conftest.sh k8s/deployment.yaml"
+      }
+    }
+
     stage("Docker build") {
       steps {
         sh "docker build -t ${env.DOCKER_IMAGE_VERSION} ./"
