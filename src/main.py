@@ -65,6 +65,8 @@ def swagger_ui():
 
 @route('/add', method=['POST', 'OPTIONS'])
 def add_handler():
+    response.headers['Content-Type'] = 'application/json'
+
     if request.method == "OPTIONS":
       return json.dumps({'status': True})
 
@@ -82,11 +84,12 @@ def add_handler():
             #cnx.commit()
             status = True
 
-    response.headers['Content-Type'] = 'application/json'
     return json.dumps({'status': status, 'result': result})
 
 @route('/sub', method=['POST', 'OPTIONS'])
 def sub_handler():
+    response.headers['Content-Type'] = 'application/json'
+
     if request.method == "OPTIONS":
       return json.dumps({'status': True})
 
@@ -100,11 +103,12 @@ def sub_handler():
             result = calc.sub(data['number1'], data['number2'])
             status = True
 
-    response.headers['Content-Type'] = 'application/json'
     return json.dumps({'status': status, 'result': result})
 
 @route('/mul', method=['POST', 'OPTIONS'])
 def mul_handler():
+    response.headers['Content-Type'] = 'application/json'
+
     if request.method == "OPTIONS":
       return json.dumps({'status': True})
 
@@ -118,11 +122,12 @@ def mul_handler():
             result = calc.mul(data['number1'], data['number2'])
             status = True
 
-    response.headers['Content-Type'] = 'application/json'
     return json.dumps({'status': status, 'result': result})
 
 @route('/div', method=['POST', 'OPTIONS'])
 def div_handler():
+    response.headers['Content-Type'] = 'application/json'
+
     if request.method == "OPTIONS":
       return json.dumps({'status': True})
 
@@ -136,8 +141,8 @@ def div_handler():
             result = calc.div(data['number1'], data['number2'])
             status = True
 
-    response.headers['Content-Type'] = 'application/json'
     return json.dumps({'status': status, 'result': result})
 
 
-run(host='0.0.0.0', reloader=True, port=8081)
+if __name__ == '__main__':
+    run(host='0.0.0.0', reloader=True, port=8081)

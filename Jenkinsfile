@@ -31,6 +31,12 @@ pipeline {
       }
     }
 
+    stage("Integration tests") {
+      steps {
+        sh "./docker-integration-test.sh"
+      }
+    }
+
     // stage("Secret scan") {
     //   steps {
     //     sh "./docker-gittyleaks.sh ./src/"
