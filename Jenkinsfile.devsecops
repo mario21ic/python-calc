@@ -90,6 +90,11 @@ pipeline {
             sh "./docker-trivy.sh ${env.DOCKER_IMAGE_VERSION} || true"
           }
         }
+        stage("ClamAV") {
+          steps {
+            sh "./docker-clamav.sh ${env.DOCKER_IMAGE_VERSION}"
+          }
+        }
       }
     }
 
