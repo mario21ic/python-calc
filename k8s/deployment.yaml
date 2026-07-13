@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-calc
+  labels:
+    app: python-calc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-calc
+  template:
+    metadata:
+      labels:
+        app: python-calc
+    spec:
+      containers:
+        - name: python-calc
+          image: __IMAGE__
+          ports:
+            - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 20

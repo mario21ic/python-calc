@@ -13,6 +13,9 @@ pipeline {
     string(name: 'SONAR_ORGANIZATION', defaultValue: 'project-u201421533', description: 'SonarCloud organization key')
     string(name: 'SONAR_PROJECT_KEY', defaultValue: 'project-u201421533_python-calc', description: 'SonarCloud project key')
     string(name: 'SONAR_CREDENTIALS', defaultValue: 'sonarcloud_token', description: 'Jenkins credential id (Secret text) with the SonarCloud token')
+    booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Deploy to Kubernetes after publishing the image')
+    string(name: 'K8S_NAMESPACE', defaultValue: 'default', description: 'Kubernetes namespace to deploy to')
+    string(name: 'KUBECONFIG_CREDENTIALS', defaultValue: 'kubeconfig', description: 'Jenkins credential id (Secret file) with the kubeconfig')
   }
 
   environment {
@@ -111,6 +114,17 @@ pipeline {
         }
 
         sh "docker push ${env.DOCKER_IMAGE_VERSION}"
+      }
+    }
+
+    stage("Deploy to Kubernetes") {
+      when {
+        expression { return params.DEPLOY }
+      }
+      steps {
+        withCredentials([file(credentialsId: "${params.KUBECONFIG_CREDENTIALS}", variable: 'KUBECONFIG_FILE')]) {
+          sh "./docker-k8s-deploy.sh ${env.DOCKER_IMAGE_VERSION} ${params.K8S_NAMESPACE} \$KUBECONFIG_FILE"
+        }
       }
     }
 
